@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql-psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
         'PASSWORD': os.getenv('PASSWORD'),
@@ -128,5 +128,5 @@ STATICFILES_DIRS = [
     BASE_DIR/ 'static'
 ]
 
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
