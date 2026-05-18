@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+{% block title %}Отправка формы{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if object %}Редактировать статью{% else %}Новая статья{% endif %}</h1>
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary ">Сохранить</button>
+        <a href="{% url 'blog:post_list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

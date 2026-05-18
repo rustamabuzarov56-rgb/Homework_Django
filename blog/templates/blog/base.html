@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <title>{% block title %}Skystore{% endblock %}</title>
+</head>
+<body>
+{% include 'blog/header.html' %}
+<main class="flex-grow-1">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="bg-white text-center text-muted py-3 border-top mt-auto">
+    <div class="container">
+        <p class="mb-0">&copy; 2026 Skystore. Все права защищены.</p>
+    </div>
+</footer>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
