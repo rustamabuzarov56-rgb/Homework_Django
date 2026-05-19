@@ -14,7 +14,7 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(is_published=True)
 
-class PostDetailView(DeleteView):
+class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
@@ -22,7 +22,7 @@ class PostDetailView(DeleteView):
     def get_object(self, queryset=None):
         obj = super().get_object()
         obj.views_count += 1
-        obj.save()
+        obj.save(update_fields=['views_count'])
         return obj
 
 class PostUpdateView(UpdateView):
