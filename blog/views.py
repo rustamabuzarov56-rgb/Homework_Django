@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from catalog.models import Product
 from .models import Post
@@ -11,25 +11,36 @@ class PostListView(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
 
+    def get_queryset(self):
+        return Post.objects.filter(is_published=True)
+
 class PostDetailView(DeleteView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
+    def get_object(self, queryset=None):
+        obj = super().get_object()
+        obj.views_count += 1
+        obj.save()
+        return obj
+
 class PostUpdateView(UpdateView):
     model = Post
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/post_form.html'
-    success_url = reverse_lazy('blog:post_list')
+
+    def get_success_url(self):
+        return reverse('blogs:post_detail', kwargs={'pk': self.object.pk})
 
 class PostCreateView(CreateView):
     model = Post
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/post_form.html'
-    success_url = reverse_lazy('blog:post_list')
+    success_url = reverse_lazy('blogs:post_list')
 
 class PostDeleteView(DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
-    success_url = reverse_lazy('blog:post_list')
+    success_url = reverse_lazy('blogs:post_list')
 
