@@ -5,6 +5,7 @@
     <h1>{% if object %}Редактировать товар{% else %}Новый товар{% endif %}</h1>
     <form method="post" enctype="multipart/form-data" class="mt-4">
         {% csrf_token %}
+        {{form.non_field_errors}}
         {{form.as_p}}
         <button type="submit" class="btn btn-primary ">Сохранить товар</button>
         <a href="{% url 'catalog:products_list' %}" class="btn btn-secondary">Отмена</a>
