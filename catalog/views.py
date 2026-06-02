@@ -5,6 +5,8 @@ from django.views import  View
 
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from catalog.forms import ProductForm
 from catalog.models import Product
 
 class ProductListView(ListView):
@@ -26,3 +28,20 @@ class ProductDetailView(DeleteView):
     model = Product
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products_list')
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products_list')
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:products_list')
