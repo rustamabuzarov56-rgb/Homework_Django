@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from catalog.models import Product
 from .models import Post
@@ -25,7 +26,7 @@ class PostDetailView(DetailView):
         obj.save(update_fields=['views_count'])
         return obj
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/post_form.html'
@@ -33,13 +34,13 @@ class PostUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('blogs:post_detail', kwargs={'pk': self.object.pk})
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/post_form.html'
     success_url = reverse_lazy('blogs:post_list')
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('blogs:post_list')
