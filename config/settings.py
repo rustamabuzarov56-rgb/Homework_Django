@@ -14,7 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-from django.conf.global_settings import STATICFILES_DIRS, MEDIA_ROOT, MEDIA_URL
+from django.conf.global_settings import STATICFILES_DIRS, MEDIA_ROOT, MEDIA_URL, LOGIN_URL, LOGIN_REDIRECT_URL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog',
     'blog',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,18 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'r4buzyarov@yandex.ru'
+EMAIL_HOST_PASSWORD = 'pugkzgicvwtatkfs'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
+LOGIN_REDIRECT_URL = 'catalog:products_list'
+LOGIN_URL = 'users:login'
