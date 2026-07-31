@@ -3,12 +3,21 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DeleteView, DetailView
 from django.views import  View
 
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseForbidden
 
 from catalog.forms import ProductForm
 from catalog.models import Product
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+class ProductUnpublishView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        if not request.user.has_perm('catalog.can_unpublish_product'):
+            return HttpResponseForbidden('У вас нет разрешения на снятие продукта с публикации')
+        product.is_published = False
+        product.save()
+        return redirect('catalog:product_detail', pk=pk)
 
 class ProductListView(ListView):
     model = Product

@@ -18,6 +18,14 @@
         {% else %}
         <p>Фото отсутсвует</p>
         {% endif %}
+        {% if perms.catalog.can_unpublish_product %}
+        <div class="moderator-panel my-3">
+            <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning">Снять с публикации</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
     <script src="/static/js/bootstrap.bundle.min.js"></script>
 </body>
