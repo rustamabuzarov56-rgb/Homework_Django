@@ -25,7 +25,6 @@ class ProductListView(ListView):
     context_object_name = 'products'
 
 class ContactsView(View):
-
     def get(self, request):
         return render(request, 'catalog/contacts.html')
 
