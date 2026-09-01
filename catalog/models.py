@@ -2,6 +2,9 @@ from tkinter.constants import CASCADE
 
 from django.db import models
 
+from users.models import CustomUser
+
+
 class Category(models.Model):
 
     name = models.CharField(max_length=150, verbose_name="наименование")
@@ -25,6 +28,7 @@ class Product(models.Model):
     created_at = models.DateField(auto_now_add=True, verbose_name="дата создания")
     updated_at = models.DateField(auto_now=True, verbose_name="дата последнего изменения")
     is_published = models.BooleanField(default=False, verbose_name="опубликовано")
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="владелец", blank=True, null=True)
 
     def __str__(self):
         return self.name
