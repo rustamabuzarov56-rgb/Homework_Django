@@ -18,6 +18,18 @@
         {% else %}
         <p>Фото отсутсвует</p>
         {% endif %}
+        <div class="d-grid gap-2 mt-3 my-5">
+            <hr>
+            <a href="{% url 'catalog:products_list' %}" class="btn btn-sm btn-outline-primary">Назад к списку</a>
+        </div>
+        {% if perms.catalog.can_unpublish_product and product.is_published %}
+        <div class="moderator-panel my-3">
+            <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning">Снять с публикации</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
     <script src="/static/js/bootstrap.bundle.min.js"></script>
 </body>
