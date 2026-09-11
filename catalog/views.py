@@ -1,4 +1,5 @@
 from gc import get_objects
+from itertools import product
 
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -11,6 +12,8 @@ from django.http import HttpResponse, HttpResponseForbidden
 from catalog.forms import ProductForm
 from catalog.models import Product
 from django.core.exceptions import PermissionDenied
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ProductUnpublishView(LoginRequiredMixin, View):
@@ -40,6 +43,16 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get(self.pk_url_kwarg) or self.kwargs.get('pk')
+        cache_key = f"product_{pk}"
+        cached_product = cache.get(cache_key)
+
+        if not cached_product:
+            cached_product = super().get_object(queryset)
+            cache.set(cache_key, cached_product, 60 * 15)
+        return cached_product
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
