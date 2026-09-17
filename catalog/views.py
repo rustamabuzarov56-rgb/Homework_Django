@@ -9,6 +9,7 @@ from django.views import  View
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseForbidden
 
+from .services import ProductService
 from catalog.forms import ProductForm
 from catalog.models import Product
 from django.core.exceptions import PermissionDenied
@@ -91,3 +92,12 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if not(is_owner or is_moderator):
             raise PermissionDenied
         return product
+
+class CategoryProductListView(ListView):
+    model = Product
+    template_name = 'catalog/category_products.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return ProductService.product_get_by_category(pk)
