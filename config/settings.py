@@ -14,7 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-from django.conf.global_settings import STATICFILES_DIRS, MEDIA_ROOT, MEDIA_URL, LOGIN_URL, LOGIN_REDIRECT_URL
+from django.conf.global_settings import STATICFILES_DIRS, MEDIA_ROOT, MEDIA_URL, LOGIN_URL, LOGIN_REDIRECT_URL, CACHES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -147,3 +147,13 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = 'catalog:products_list'
 LOGIN_URL = 'users:login'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://localhost:6379/1',
+        'OPTIONS':{
+            'protocol': 2,
+        }
+    }
+}
